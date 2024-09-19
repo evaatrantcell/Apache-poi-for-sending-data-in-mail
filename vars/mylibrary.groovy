@@ -19,6 +19,7 @@ def call(filePath, sheetName, excelfolder) {
         if (workbook.getSheet(sheetName)) {
             println "Sheet '${sheetName}' found in file: ${file.getAbsolutePath()}"
             // List to store file paths
+            Sheet sheet = workbook.getSheet(sheetName)
             for (Row row : sheet) {
                 tableHtml += "<tr>"
                 for (Cell cell : row) {
