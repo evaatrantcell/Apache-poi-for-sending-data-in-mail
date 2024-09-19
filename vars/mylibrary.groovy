@@ -5,7 +5,7 @@ import java.io.File
 import java.io.FileInputStream
 
 def call(filePath, sheetName) {
-    def f1 = new File(config.test_run_excelreportdata_path)
+    def f1 = new File(filePath)
     def testrunexcelfolder = f1.text
 
     // Get all .xlsx files in the directory
