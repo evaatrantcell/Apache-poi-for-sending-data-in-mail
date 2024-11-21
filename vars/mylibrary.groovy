@@ -14,13 +14,14 @@ def call(filePath, sheetName, excelfolder) {
     files.each { file ->
         FileInputStream fis = new FileInputStream(file)
         XSSFWorkbook workbook = new XSSFWorkbook(fis)
-        
+        String fileName = file.getName();
         // Check if the sheet exists in the workbook
         if (workbook.getSheet(sheetName)) {
             println "Sheet '${sheetName}' found in file: ${file.getAbsolutePath()}"
             // List to store file paths
             Sheet sheet = workbook.getSheet(sheetName);
             boolean isHeader = true; // Flag to identify the header row
+            tableHtml += "<tr>" + "<th style='background-color: #FFD700;'>" + fileName + "</th>" + "</tr>";
             for (Row row : sheet) {
                 tableHtml += "<tr>";
                 for (Cell cell : row) {
@@ -61,8 +62,6 @@ def call(filePath, sheetName, excelfolder) {
                                 cellStyle = ""; // No style for other values
                         }
                         tableHtml += "<td style='" + cellStyle + "'>" + cellValue + "</td>";
-                    }
-
                     }
                 }
                 tableHtml += "</tr>";
