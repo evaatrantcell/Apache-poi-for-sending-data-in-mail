@@ -19,28 +19,58 @@ def call(filePath, sheetName, excelfolder) {
         if (workbook.getSheet(sheetName)) {
             println "Sheet '${sheetName}' found in file: ${file.getAbsolutePath()}"
             // List to store file paths
-            Sheet sheet = workbook.getSheet(sheetName)
+            Sheet sheet = workbook.getSheet(sheetName);
+            boolean isHeader = true; // Flag to identify the header row
             for (Row row : sheet) {
-                tableHtml += "<tr>"
+                tableHtml += "<tr>";
                 for (Cell cell : row) {
-                    String cellValue = ""
-                    switch (cell.cellType) {
-                        case CellType.STRING:
-                            cellValue = cell.stringCellValue
-                            break
-                        case CellType.NUMERIC:
-                            cellValue = cell.numericCellValue.toString()
-                            break
-                        case CellType.BOOLEAN:
-                            cellValue = cell.booleanCellValue.toString()
-                            break
+                    String cellValue = "";
+                    switch (cell.getCellType()) {
+                        case STRING:
+                            cellValue = cell.getStringCellValue();
+                            break;
+                        case NUMERIC:
+                            cellValue = String.valueOf(cell.getNumericCellValue());
+                            break;
+                        case BOOLEAN:
+                            cellValue = String.valueOf(cell.getBooleanCellValue());
+                            break;
                         default:
-                            cellValue = ""
+                            cellValue = "";
                     }
-                    tableHtml += "<td>${cellValue}</td>"
+
+                    // Add style for the header row
+                    if (isHeader) {
+                        tableHtml += "<th style='background-color: yellow;'>" + cellValue + "</th>";
+                    } else {
+                        String cellStyle = ""; // Variable to store background color
+                        switch (cellValue.toUpperCase()) {
+                            case "PASSED":
+                                cellStyle = "background-color: lightgreen;";
+                                break;
+                            case "FAILED":
+                                cellStyle = "background-color: lightcoral;"; // Light red
+                                break;
+                            case "SKIPPED":
+                                cellStyle = "background-color: #FFA590;"; // Custom light orange
+                                break;
+                            case "WARNING":
+                                cellStyle = "background-color: #FFFF98;"; // Light yellow
+                                break;
+                            default:
+                                cellStyle = ""; // No style for other values
+                        }
+                        tableHtml += "<td style='" + cellStyle + "'>" + cellValue + "</td>";
+                    }
+
+                    }
                 }
-                tableHtml += "</tr>"
+                tableHtml += "</tr>";
+
+                // After processing the first row, set the flag to false
+                isHeader = false;
             }
+
         }
         workbook.close()
         fis.close()
