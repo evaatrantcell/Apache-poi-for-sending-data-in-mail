@@ -27,13 +27,13 @@ def call(filePath, sheetName, excelfolder) {
                 for (Cell cell : row) {
                     String cellValue = "";
                     switch (cell.getCellType()) {
-                        case STRING:
+                        case CellType.STRING:
                             cellValue = cell.getStringCellValue();
                             break;
-                        case NUMERIC:
+                        case CellType.NUMERIC:
                             cellValue = String.valueOf(cell.getNumericCellValue());
                             break;
-                        case BOOLEAN:
+                        case CellType.BOOLEAN:
                             cellValue = String.valueOf(cell.getBooleanCellValue());
                             break;
                         default:
@@ -75,9 +75,5 @@ def call(filePath, sheetName, excelfolder) {
         fis.close()
     }
     tableHtml += "</table>"
-//     FileInputStream file = new FileInputStream(new File(filePath))
-//     Workbook workbook = new XSSFWorkbook(file)
-//     Sheet sheet = workbook.getSheet(sheetName)
-//     file.close()
     return tableHtml
 }
